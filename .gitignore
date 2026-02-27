@@ -1,0 +1,33 @@
+cat > .gitignore << 'EOF'
+# Archivos de entorno
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencias
+node_modules/
+__pycache__/
+*.pyc
+venv/
+env/
+dist/
+build/
+EOF
