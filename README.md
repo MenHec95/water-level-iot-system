@@ -25,7 +25,7 @@ water-level-iot-system/
 ## 🚀 Estado del Proyecto
 
 - [x] Código Arduino
-- [ ] Serial Bridge Python
+- [x] Serial Bridge Python
 - [ ] Backend NestJS
 - [ ] Frontend React
 - [ ] Deploy
