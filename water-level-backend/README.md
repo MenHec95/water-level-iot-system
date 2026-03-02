@@ -111,3 +111,7 @@ src/
 ## 📄 License
 
 MIT
+
+## 🌐 Translations
+
+- [Español](./README.es.md)
