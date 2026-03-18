@@ -1,4 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { EventsGateway } from '../events/events.gateway';
 import { Reading } from './domain/reading.entity';
 import { CreateReadingDto, ReadingResponseDto } from './dto';
 import {
@@ -20,16 +21,25 @@ export class ReadingsService {
     constructor(
         @Inject(READINGS_REPOSITORY)
         private readonly readingsRepository: IReadingsRepository,
+        private readonly eventsGateway: EventsGateway,
     ) { }
 
     async create(dto: CreateReadingDto): Promise<ReadingResponseDto> {
         this.logger.debug(`Receiving reading — level: ${dto.level}%`);
 
         const reading = await this.readingsRepository.create(dto);
+        const response = ReadingResponseDto.fromEntity(reading);
+
+        this.eventsGateway.emitNewReading(response);
+
+        if (reading.isCritical()) {
+            this.logger.warn(`Critical reading detected — level: ${reading.level}%`);
+            this.eventsGateway.emitAlert(response);
+        }
 
         this.logger.log(`Reading saved — id: ${reading.id}, level: ${reading.level}%`);
 
-        return ReadingResponseDto.fromEntity(reading);
+        return response;
     }
 
     async findAll(page: number, limit: number): Promise<PaginatedReadings> {

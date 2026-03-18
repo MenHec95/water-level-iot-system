@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppConfigModule } from './config/config.module';
+import { EventsModule } from './modules/events/events.module';
 import { ReadingsModule } from './modules/readings/readings.module';
 import { PrismaModule } from './prisma/prisma.module';
 
@@ -8,6 +9,7 @@ import { PrismaModule } from './prisma/prisma.module';
     AppConfigModule,
     PrismaModule,
     ReadingsModule,
+    EventsModule,
   ],
 })
 export class AppModule { }
