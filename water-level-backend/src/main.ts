@@ -1,12 +1,12 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AllExceptionsFilter, HttpExceptionFilter } from './common/filters';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
-  // CORS
   app.enableCors({
     origin: (process.env['CORS_ORIGINS'] ?? 'http://localhost:5173')
       .split(',')
@@ -16,7 +16,11 @@ async function bootstrap(): Promise<void> {
     credentials: true,
   });
 
-  // Global validation pipe
+  app.useGlobalFilters(
+    new AllExceptionsFilter(),
+    new HttpExceptionFilter(),
+  );
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -28,7 +32,6 @@ async function bootstrap(): Promise<void> {
     }),
   );
 
-  // Swagger
   const config = new DocumentBuilder()
     .setTitle('Water Level IoT API')
     .setDescription('REST API for real-time water level monitoring system')
